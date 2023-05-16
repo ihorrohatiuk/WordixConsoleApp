@@ -15,7 +15,7 @@ namespace WordixConsoleApp
 
         public void ShowInfo()
         {
-            Console.WriteLine($"Set name: \'{name}\'\n");
+            Console.WriteLine($"set name: \'{name}\' \n");
 
             //Finding the longest QUESTION
             string maxQuestion = Questions[0];
@@ -90,6 +90,8 @@ namespace WordixConsoleApp
                 }
                 Console.WriteLine($"    {Answers[i]}");
             }
+
+            Console.Write("\n");
         }
     }
 }

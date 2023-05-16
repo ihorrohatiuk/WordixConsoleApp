@@ -7,6 +7,7 @@ namespace WordixConsoleApp
     internal class Program
     {
         private static Set NewSet;
+        static Set[] Sets = Array.Empty<Set>();
 
         static void Main()
         {
@@ -54,7 +55,11 @@ namespace WordixConsoleApp
             //Addind a NAME
             Console.Write("Write a set name: ");
             string? name = Console.ReadLine();
-            NewSet = new Set(name); //?????Should that declaration be here?
+            NewSet = new Set(name);
+
+            //Adding new set into array
+            Array.Resize(ref Sets, Sets.Length + 1);
+            Sets[^1] = NewSet;
 
             while(true) 
             {
@@ -107,8 +112,13 @@ namespace WordixConsoleApp
         static void SetInfo()
         {
             Console.Clear();
-            
-            NewSet.ShowInfo();
+            Console.WriteLine("[!] Press \'any key\' to back to screen.\n");
+
+            for (int i = 0; i < Sets.Length; i++)
+            {
+                Console.Write($"Set id = \'{i + 1}\', "); //The end of this row is comma, because in Set.ShowInfo() it's continue, some shitcodding ;)
+                Sets[i].ShowInfo();
+            }
 
             ConsoleKeyInfo key = Console.ReadKey(true);
             switch (key.Key)
