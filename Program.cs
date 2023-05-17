@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO; //for file
 using System.Threading; //for delay
 
 
@@ -22,6 +23,7 @@ namespace WordixConsoleApp
 
             Console.WriteLine("Hello, my name is Wordix! I help people to remember words easyest =)\n");
             Console.WriteLine("[N] - to create a new word-list.");
+            Console.WriteLine("[R] - to copy a new word-list from the file.");
             Console.WriteLine("[T] - to make a test.");
             Console.WriteLine("[I] - to see Set-Info.");
             Console.WriteLine("[D] - to delete all sets.");
@@ -32,6 +34,9 @@ namespace WordixConsoleApp
             {
                 case ConsoleKey.N:
                     CreateSet();
+                    break;
+                case ConsoleKey.R:
+                    CreateFromFile();
                     break;
                 case ConsoleKey.T:
                     TestList();
@@ -104,6 +109,65 @@ namespace WordixConsoleApp
             
             } 
 
+        }
+
+        static void CreateFromFile()
+        {
+            Console.Clear();
+
+            Console.Write("[!] Write the name of your file, like <example.txt>: ");
+            string? filePath = Console.ReadLine();
+
+            if (File.Exists(filePath))
+            {
+                Console.Clear();
+
+                //Reading from file
+                string[] fileLines = File.ReadAllLines(filePath);
+
+                //Creating new set
+                Console.Write("Write a set name: ");
+                string name = Console.ReadLine();
+                NewSet = new Set(name);
+
+                Console.Clear();
+
+                Array.Resize(ref NewSet.Questions, fileLines.Length / 2);
+                Array.Resize(ref NewSet.Answers, fileLines.Length / 2);
+
+                int oddIndex = 0;
+                int evenIndex = 0;
+                for (int i = 0; i < fileLines.Length; i++)
+                {
+                    if (i % 2 == 0)
+                    {
+                        NewSet.Questions[oddIndex] = fileLines[i];
+                        oddIndex++;
+                    }
+                    else
+                    {
+                        NewSet.Answers[evenIndex] = fileLines[i];
+                        evenIndex++;
+                    }
+                }
+
+                Array.Resize(ref Sets, Sets.Length + 1);
+                Sets[^1] = NewSet;
+
+                NewSet.ShowInfo();
+                Thread.Sleep(1000);
+                Console.WriteLine("[!] Everything added successfuly! Press any key to continue.\n");
+                                
+                Console.ReadLine();
+                Main();
+            }
+            else
+            {
+                Console.Clear();
+                Console.WriteLine($"[!] Sorry, file with name \'{filePath}\' doesn't seem to exist. Please, try again.");
+                Thread.Sleep(2000);
+                Main();
+            }
         }
 
         //Testing selected set
