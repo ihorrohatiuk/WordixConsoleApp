@@ -24,6 +24,7 @@ namespace WordixConsoleApp
             Console.WriteLine("[N] - to create a new word-list.");
             Console.WriteLine("[T] - to make a test.");
             Console.WriteLine("[I] - to see Set-Info.");
+            Console.WriteLine("[D] - to delete all sets.");
             Console.WriteLine("[Q] - to quit.");
 
             ConsoleKeyInfo key = Console.ReadKey(true);
@@ -40,6 +41,9 @@ namespace WordixConsoleApp
                     return;
                 case ConsoleKey.I:
                     SetInfo();
+                    return;
+                case ConsoleKey.D:
+                    DeleteSets();
                     return;
                 default:
                     StartScreen();
@@ -112,20 +116,61 @@ namespace WordixConsoleApp
         static void SetInfo()
         {
             Console.Clear();
-            Console.WriteLine("[!] Press \'any key\' to back to screen.\n");
 
-            for (int i = 0; i < Sets.Length; i++)
+            if (Sets.Length == 0)
             {
-                Console.Write($"Set id = \'{i + 1}\', "); //The end of this row is comma, because in Set.ShowInfo() it's continue, some shitcodding ;)
-                Sets[i].ShowInfo();
+                Console.WriteLine("[!] You haven't got any sets!");
+                Thread.Sleep(2000);
+                Main();
             }
-
-            ConsoleKeyInfo key = Console.ReadKey(true);
-            switch (key.Key)
+            else
             {
-                default:
-                    StartScreen();
-                    break;
+                Console.WriteLine("[!] Press \'any key\' to back to screen.\n");
+
+                for (int i = 0; i < Sets.Length; i++)
+                {
+                    Console.Write($"Set id = \'{i + 1}\', "); //The end of this row is comma, because in Set.ShowInfo() it's continue, some shitcodding ;)
+                    Sets[i].ShowInfo();
+                }
+
+                ConsoleKeyInfo key = Console.ReadKey(true);
+                switch (key.Key)
+                {
+                    default:
+                        StartScreen();
+                        break;
+                }
+            }
+        }
+
+        static void DeleteSets()
+        {
+            Console.Clear();
+
+            if (Sets.Length == 0)
+            {
+                Console.WriteLine("[!] You haven't got any sets!");
+                Thread.Sleep(2000);
+                Main();
+            }
+            else
+            {
+                Console.Clear();
+                Console.WriteLine("[!] Warning [!] All your sets will be delete.");
+                Console.WriteLine("[!] Press \'Y\' to continue, or \'N\' to back to start screen.");
+                ConsoleKeyInfo key = Console.ReadKey(true);
+
+                if (key.Key == ConsoleKey.Y)
+                {
+                    Sets = Array.Empty<Set>();
+                    Console.WriteLine("[*] All sets successfully have been deleted!");
+                    Thread.Sleep(2000);
+                    Main();
+                }
+                else
+                {
+                    Main();
+                }
             }
         }
     }
