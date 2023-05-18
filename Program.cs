@@ -173,8 +173,96 @@ namespace WordixConsoleApp
         //Testing selected set
         static void TestList()
         {
-            Console.Clear();
-            Console.WriteLine("now we will testing you =)");
+            if (Sets.Length == 0)
+            {
+                Console.Clear();
+                Console.WriteLine("[!] Sorry, you haven't got any sets, create them or import from the file.");
+                Thread.Sleep(2000);
+                Main();
+            }
+            else
+            {
+                Console.Clear();
+
+                Console.Write("[*] Specify the id of the set you want to test: ");
+                int id = 0;
+                try
+                {
+                    id = Convert.ToInt32(Console.ReadLine());
+                }
+                catch (FormatException)
+                {
+                    Console.WriteLine("[!] Invalid ID, try again!");
+                    Thread.Sleep(1000);
+                    Main();
+                }
+
+                if (id < 1 || id > Sets.Length)
+                {
+                    Console.WriteLine("[!] Invalid ID, try again!");
+                    Thread.Sleep(1000);
+                    Main();
+                }
+
+                Console.WriteLine("[*] We will test this set: \n");
+                Sets[id - 1].ShowInfo();
+                Console.WriteLine("\n[*] Press any key to continue.");
+                Console.ReadLine();
+
+                int correctAnswers = 0;
+                int totalQuestions = 0;
+                float resultInPersents = 0f;
+
+                while (totalQuestions != Sets[id - 1].Questions.Length * 2)
+                {
+                    Console.Clear();
+                    totalQuestions++;
+
+                    Random random = new();
+                    int index = random.Next(Sets[id - 1].Questions.Length);
+                    string RandomQuestion = Sets[id - 1].Questions[index];
+
+                    string? CheckAnswer;
+
+                    do
+                    {
+                        Console.Clear();
+                        Console.WriteLine("Question:");
+                        Console.WriteLine(RandomQuestion + "\n");
+
+                        Console.WriteLine("Answer:");
+                        CheckAnswer = Console.ReadLine();
+
+                        if (string.Equals(CheckAnswer, Sets[id - 1].Answers[index]))
+                        {
+                            correctAnswers++;
+                        }
+                        else
+                        {
+                            correctAnswers--;
+                        }
+                    } while (!string.Equals(CheckAnswer, Sets[id - 1].Answers[index]));
+
+                    Console.WriteLine("\n[*] Correct!");
+                    Thread.Sleep(1000);
+                }
+
+                resultInPersents = (float)correctAnswers / totalQuestions * 100;
+                Console.Clear();
+                if (resultInPersents <= 0)
+                {
+                    Console.WriteLine("Percentage: 0.00%");
+                }
+                else
+                {
+                    Console.WriteLine($"Percentage: {resultInPersents}%");
+                }
+                   
+                Console.WriteLine("[*] Press any key to continue.");
+
+                Console.ReadLine();
+                Main();
+            }
         }
 
         static void SetInfo()
@@ -197,13 +285,8 @@ namespace WordixConsoleApp
                     Sets[i].ShowInfo();
                 }
 
-                ConsoleKeyInfo key = Console.ReadKey(true);
-                switch (key.Key)
-                {
-                    default:
-                        StartScreen();
-                        break;
-                }
+                Console.ReadLine();
+                Main();
             }
         }
 
