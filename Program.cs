@@ -66,13 +66,15 @@ namespace WordixConsoleApp
             string? name = Console.ReadLine();
             NewSet = new Set(name);
 
+            //Creating file name
+            string filePath = name + ".txt";
+
             //Adding new set into array
             Array.Resize(ref Sets, Sets.Length + 1);
             Sets[^1] = NewSet;
 
             while(true) 
             {
-                //[*]Info
                 Console.WriteLine("\n[!] Press \'+\' to add a question-answer block or \'S\' to exit");
 
                 ConsoleKeyInfo key = Console.ReadKey(true);
@@ -87,9 +89,21 @@ namespace WordixConsoleApp
                         Array.Resize(ref NewSet.Questions, NewSet.Questions.Length + 1);
                         NewSet.Questions[^1] = GetQuestion;
 
+                        //Adding question to the file
+                        using (StreamWriter writer = new StreamWriter(filePath, true))
+                        {
+                            writer.WriteLine(GetQuestion);
+                        }    
+
                         //Addind a answer
                         Console.WriteLine("\n2) Add an answer");
                         string? GetAnswer = Console.ReadLine();
+
+                        //Adding answer to the file
+                        using (StreamWriter writer = new StreamWriter(filePath, true))
+                        {
+                            writer.WriteLine(GetAnswer);
+                        }
 
                         Array.Resize(ref NewSet.Answers, NewSet.Answers.Length + 1);
                         NewSet.Answers[^1] = GetAnswer;
@@ -116,7 +130,7 @@ namespace WordixConsoleApp
             Console.Clear();
 
             Console.Write("[!] Write the name of your file, like <example.txt>: ");
-            string? filePath = Console.ReadLine();
+            string filePath = Console.ReadLine();
 
             if (File.Exists(filePath))
             {
@@ -127,7 +141,7 @@ namespace WordixConsoleApp
 
                 //Creating new set
                 Console.Write("Write a set name: ");
-                string name = Console.ReadLine();
+                string? name = Console.ReadLine();
                 NewSet = new Set(name);
 
                 Console.Clear();
@@ -285,8 +299,13 @@ namespace WordixConsoleApp
                     Sets[i].ShowInfo();
                 }
 
-                Console.ReadLine();
-                Main();
+                ConsoleKeyInfo key = Console.ReadKey(true);
+                switch (key.Key)
+                {
+                    default:
+                        StartScreen();
+                        break;
+                }
             }
         }
 
