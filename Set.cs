@@ -15,7 +15,7 @@ namespace WordixConsoleApp
 
         public void ShowInfo()
         {
-            Console.WriteLine($"set name: \'{name}\' \n");
+            ConsoleWrite.LineWhite($"set name: \'{name}\' \n");
 
             //Finding the longest QUESTION
             string maxQuestion = Questions[0];
@@ -37,24 +37,24 @@ namespace WordixConsoleApp
                 }
             }
 
-            Console.Write("    Question:");
+            ConsoleWrite.White("    Question:");
 
             for (int j = 0; j < maxQuestion.Length - 9; j++)
             {
-                Console.Write(" ");
+                ConsoleWrite.White(" ");
             }
 
-            Console.WriteLine("    Answer:");
+            ConsoleWrite.LineWhite("    Answer:");
 
 
-            Console.Write("    ");
+            ConsoleWrite.White("    ");
             for (int i = 0; i < maxQuestion.Length; i++)
             {
-                Console.Write("─");
+                ConsoleWrite.White("─");
             }
             if (maxQuestion.Length >= 9)
             {
-                Console.Write("    ");
+                ConsoleWrite.White("    ");
             }
             else
             {
@@ -66,29 +66,29 @@ namespace WordixConsoleApp
             }
             for (int i = 0; i < maxAnswer.Length; i++)
             {
-                Console.Write("─");
+                ConsoleWrite.White("─");
             }
             Console.Write("\n");
 
             for (int i = 0; i < Questions.Length; i++)
             {
-                Console.Write($"    {Questions[i]}");
+                ConsoleWrite.White($"    {Questions[i]}");
 
                 if (maxQuestion.Length >= 9)
                 {
                     for (int j = 0; j < maxQuestion.Length - Questions[i].Length; j++)
                     {
-                        Console.Write(" ");
+                        ConsoleWrite.White(" ");
                     }
                 }
                 else
                 {
                     for (int j = 0; j < 9 - Questions[i].Length; j++)
                     {
-                        Console.Write(" ");
+                        ConsoleWrite.White(" ");
                     }
                 }
-                Console.WriteLine($"    {Answers[i]}");
+                ConsoleWrite.LineWhite($"    {Answers[i]}");
             }
 
             Console.Write("\n");

@@ -21,13 +21,13 @@ namespace WordixConsoleApp
         {
             Console.Clear();
 
-            Console.WriteLine("Hello, my name is Wordix! I help people to remember words easyest =)\n");
-            Console.WriteLine("[N] - to create a new word-list.");
-            Console.WriteLine("[R] - to copy a new word-list from the file.");
-            Console.WriteLine("[T] - to make a test.");
-            Console.WriteLine("[I] - to see Set-Info.");
-            Console.WriteLine("[D] - to delete all sets.");
-            Console.WriteLine("[Q] - to quit.");
+            ConsoleWrite.LineWhite("Hello, my name is Wordix! I help people to remember words easyest =)\n");
+            ConsoleWrite.LineWhite("[N] - to create a new word-list.");
+            ConsoleWrite.LineWhite("[R] - to copy a new word-list from the file.");
+            ConsoleWrite.LineWhite("[T] - to make a test.");
+            ConsoleWrite.LineWhite("[I] - to see Set-Info.");
+            ConsoleWrite.LineWhite("[D] - to delete all sets.");
+            ConsoleWrite.LineWhite("[Q] - to quit.");
 
             ConsoleKeyInfo key = Console.ReadKey(true);
             switch (key.Key)
@@ -62,7 +62,7 @@ namespace WordixConsoleApp
             Console.Clear();
 
             //Addind a NAME
-            Console.Write("Write a set name: ");
+            ConsoleWrite.White("Write a set name: ");
             string? name = Console.ReadLine();
             NewSet = new Set(name);
 
@@ -75,7 +75,7 @@ namespace WordixConsoleApp
 
             while(true) 
             {
-                Console.WriteLine("\n[!] Press \'+\' to add a question-answer block or \'S\' to exit");
+                ConsoleWrite.LineGreen("\n[*] Press \'+\' to add a question-answer block or \'S\' to exit");
 
                 ConsoleKeyInfo key = Console.ReadKey(true);
                 switch (key.Key)
@@ -83,7 +83,7 @@ namespace WordixConsoleApp
                     case ConsoleKey.OemPlus:
 
                         //Addind a question
-                        Console.WriteLine("\n1) Add a question");
+                        ConsoleWrite.LineWhite("\n1) Add a question");
                         string? GetQuestion = Console.ReadLine();
 
                         Array.Resize(ref NewSet.Questions, NewSet.Questions.Length + 1);
@@ -93,10 +93,10 @@ namespace WordixConsoleApp
                         using (StreamWriter writer = new StreamWriter(filePath, true))
                         {
                             writer.WriteLine(GetQuestion);
-                        }    
+                        }
 
                         //Addind a answer
-                        Console.WriteLine("\n2) Add an answer");
+                        ConsoleWrite.LineWhite("\n2) Add an answer");
                         string? GetAnswer = Console.ReadLine();
 
                         //Adding answer to the file
@@ -111,7 +111,7 @@ namespace WordixConsoleApp
                         break;
 
                     case ConsoleKey.S:
-                        Console.WriteLine("\n\n--Saved!--");
+                        ConsoleWrite.LineGreen("\n\n--Saved!--");
                         Thread.Sleep(1000);
                         Main();
 
@@ -129,7 +129,7 @@ namespace WordixConsoleApp
         {
             Console.Clear();
 
-            Console.Write("[!] Write the name of your file, like <example.txt>: ");
+            ConsoleWrite.White("[*] Write the name of your file, like <example.txt>: ");
             string filePath = Console.ReadLine();
 
             if (File.Exists(filePath))
@@ -140,7 +140,7 @@ namespace WordixConsoleApp
                 string[] fileLines = File.ReadAllLines(filePath);
 
                 //Creating new set
-                Console.Write("Write a set name: ");
+                ConsoleWrite.White("Write a set name: ");
                 string? name = Console.ReadLine();
                 NewSet = new Set(name);
 
@@ -170,7 +170,7 @@ namespace WordixConsoleApp
 
                 NewSet.ShowInfo();
                 Thread.Sleep(1000);
-                Console.WriteLine("[!] Everything added successfuly! Press any key to continue.\n");
+                ConsoleWrite.LineGreen("[*] Everything added successfuly! Press any key to continue.\n");
                                 
                 Console.ReadLine();
                 Main();
@@ -178,7 +178,7 @@ namespace WordixConsoleApp
             else
             {
                 Console.Clear();
-                Console.WriteLine($"[!] Sorry, file with name \'{filePath}\' doesn't seem to exist. Please, try again.");
+                ConsoleWrite.LineRed($"[!] Sorry, file with name \'{filePath}\' doesn't seem to exist. Please, try again.");
                 Thread.Sleep(2000);
                 Main();
             }
@@ -190,7 +190,7 @@ namespace WordixConsoleApp
             if (Sets.Length == 0)
             {
                 Console.Clear();
-                Console.WriteLine("[!] Sorry, you haven't got any sets, create them or import from the file.");
+                ConsoleWrite.LineRed("[!] Sorry, you haven't got any sets, create them or import from the file.");
                 Thread.Sleep(2000);
                 Main();
             }
@@ -198,7 +198,7 @@ namespace WordixConsoleApp
             {
                 Console.Clear();
 
-                Console.Write("[*] Specify the id of the set you want to test: ");
+                ConsoleWrite.White("[*] Specify the id of the set you want to test: ");
                 int id = 0;
                 try
                 {
@@ -206,21 +206,21 @@ namespace WordixConsoleApp
                 }
                 catch (FormatException)
                 {
-                    Console.WriteLine("[!] Invalid ID, try again!");
+                    ConsoleWrite.LineRed("[!] Invalid ID, try again!");
                     Thread.Sleep(1000);
                     Main();
                 }
 
                 if (id < 1 || id > Sets.Length)
                 {
-                    Console.WriteLine("[!] Invalid ID, try again!");
+                    ConsoleWrite.LineRed("[!] Invalid ID, try again!");
                     Thread.Sleep(1000);
                     Main();
                 }
 
-                Console.WriteLine("[*] We will test this set: \n");
+                ConsoleWrite.LineWhite("[*] We will test this set: \n");
                 Sets[id - 1].ShowInfo();
-                Console.WriteLine("\n[*] Press any key to continue.");
+                ConsoleWrite.LineGreen("\n[*] Press ENTER to continue.");
                 Console.ReadLine();
 
                 int correctAnswers = 0;
@@ -241,10 +241,10 @@ namespace WordixConsoleApp
                     do
                     {
                         Console.Clear();
-                        Console.WriteLine("Question:");
+                        ConsoleWrite.LineWhite("Question:");
                         Console.WriteLine(RandomQuestion + "\n");
 
-                        Console.WriteLine("Answer:");
+                        ConsoleWrite.LineWhite("Answer:");
                         CheckAnswer = Console.ReadLine();
 
                         if (string.Equals(CheckAnswer, Sets[id - 1].Answers[index]))
@@ -257,7 +257,7 @@ namespace WordixConsoleApp
                         }
                     } while (!string.Equals(CheckAnswer, Sets[id - 1].Answers[index]));
 
-                    Console.WriteLine("\n[*] Correct!");
+                    ConsoleWrite.LineGreen("\n[*] Correct!");
                     Thread.Sleep(1000);
                 }
 
@@ -265,14 +265,14 @@ namespace WordixConsoleApp
                 Console.Clear();
                 if (resultInPersents <= 0)
                 {
-                    Console.WriteLine("Percentage: 0.00%");
+                    ConsoleWrite.LineWhite("Percentage: 0.00%");
                 }
                 else
                 {
-                    Console.WriteLine($"Percentage: {resultInPersents}%");
+                    ConsoleWrite.LineWhite($"Percentage: {resultInPersents}%");
                 }
-                   
-                Console.WriteLine("[*] Press any key to continue.");
+
+                ConsoleWrite.LineGreen("[*] Press any key to continue.");
 
                 Console.ReadLine();
                 Main();
@@ -285,17 +285,17 @@ namespace WordixConsoleApp
 
             if (Sets.Length == 0)
             {
-                Console.WriteLine("[!] You haven't got any sets!");
+                ConsoleWrite.LineRed("[!] You haven't got any sets!");
                 Thread.Sleep(2000);
                 Main();
             }
             else
             {
-                Console.WriteLine("[!] Press \'any key\' to back to screen.\n");
+                ConsoleWrite.LineWhite("[*] Press \'any key\' to back to screen.\n");
 
                 for (int i = 0; i < Sets.Length; i++)
                 {
-                    Console.Write($"Set id = \'{i + 1}\', "); //The end of this row is comma, because in Set.ShowInfo() it's continue, some shitcodding ;)
+                    ConsoleWrite.White($"Set id = \'{i + 1}\', "); //The end of this row is comma, because in Set.ShowInfo() it's continue, some shitcodding ;)
                     Sets[i].ShowInfo();
                 }
 
@@ -315,21 +315,21 @@ namespace WordixConsoleApp
 
             if (Sets.Length == 0)
             {
-                Console.WriteLine("[!] You haven't got any sets!");
+                ConsoleWrite.LineRed("[!] You haven't got any sets!");
                 Thread.Sleep(2000);
                 Main();
             }
             else
             {
                 Console.Clear();
-                Console.WriteLine("[!] Warning [!] All your sets will be delete.");
-                Console.WriteLine("[!] Press \'Y\' to continue, or \'N\' to back to start screen.");
+                ConsoleWrite.LineRed("[!] Warning [!] All your sets will be delete.");
+                ConsoleWrite.LineRed("[!] Press \'Y\' to continue, or \'N\' to back to start screen.");
                 ConsoleKeyInfo key = Console.ReadKey(true);
 
                 if (key.Key == ConsoleKey.Y)
                 {
                     Sets = Array.Empty<Set>();
-                    Console.WriteLine("[*] All sets successfully have been deleted!");
+                    ConsoleWrite.LineGreen("[*] All sets successfully have been deleted!");
                     Thread.Sleep(2000);
                     Main();
                 }
